@@ -3,25 +3,32 @@
 # https://www.highcharts.com/docs/index
 
 import justpy as jp
+import pandas as pd
+from datetime import datetime
+from pytz import utc
+
+data = pd.read_csv("Data/reviews.csv", parse_dates=["Timestamp"]) # Cargo el dataset en la variable data, que será un DataFrame de pandas.
+data["Day"] = data["Timestamp"].dt.date              # Creo una nueva columna en el DataFrame que se llamará Day y que contendrá la fecha de la columna Timestamp
+day_average = data.groupby(["Day"])["Rating"].mean() # Agrupo los datos por la columna Day y realizo la media de los valores que hay en la columna Rating
 
 # Código conseguido de: https://www.highcharts.com/docs/chart-and-series-types/spline-chart
 chart_def =  """
 {
     chart: {
         type: 'spline',
-        inverted: true
+        inverted: false
     },
     title: {
-        text: 'Atmosphere Temperature by Altitude'
+        text: 'Average Rating by Day'
     },
     subtitle: {
-        text: 'According to the Standard Atmosphere Model'
+        text: 'Average ratings by day left for all courses'
     },
     xAxis: {
         reversed: false,
         title: {
             enabled: true,
-            text: 'Altitude'
+            text: 'Date'
         },
         labels: {
             format: '{value} km'
@@ -34,7 +41,7 @@ chart_def =  """
     },
     yAxis: {
         title: {
-            text: 'Temperature'
+            text: 'Rating'
         },
         labels: {
             format: '{value}°'
@@ -49,7 +56,7 @@ chart_def =  """
     },
     tooltip: {
         headerFormat: '<b>{series.name}</b><br/>',
-        pointFormat: '{point.x} km: {point.y}°C'
+        pointFormat: '{point.x}: {point.y:.2f}'
     },
     plotOptions: {
         spline: {
@@ -59,7 +66,7 @@ chart_def =  """
         }
     },
     series: [{
-        name: 'Temperature',
+        name: 'Rating',
         data: [
             [0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
             [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]
@@ -74,6 +81,11 @@ def app():
     h1 = jp.QDiv(a=wp, text="Análisis de reseñas de los cursos", classes="text-h1 text-center q-pa-md")
     p1 = jp.QDiv(a=wp, text="Estos párrafos representan el análisis de las reseñas del curso")
     hc = jp.HighCharts(a=wp, options=chart_def)
+    hc.options.tittle.text = "Average rating by Day"
+
+
+    hc.options.xAxis.categories = list(day_average.index)
+    hc.options.series[0].data = list(day_average.values)
     
     return wp
 
