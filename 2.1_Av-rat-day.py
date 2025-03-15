@@ -31,7 +31,7 @@ chart_def =  """
             text: 'Date'
         },
         labels: {
-            format: '{value} km'
+            format: '{value}'
         },
         accessibility: {
             rangeDescription: 'Range: 0 to 80 km.'
@@ -41,10 +41,10 @@ chart_def =  """
     },
     yAxis: {
         title: {
-            text: 'Rating'
+            text: 'Average Rating'
         },
         labels: {
-            format: '{value}°'
+            format: '{value}'
         },
         accessibility: {
             rangeDescription: 'Range: -90°C to 20°C.'
@@ -66,7 +66,7 @@ chart_def =  """
         }
     },
     series: [{
-        name: 'Rating',
+        name: 'Average Rating',
         data: [
             [0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
             [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]
