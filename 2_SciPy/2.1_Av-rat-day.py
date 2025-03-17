@@ -6,8 +6,12 @@ import justpy as jp
 import pandas as pd
 from datetime import datetime
 from pytz import utc
+import os
 
-data = pd.read_csv("Data/reviews.csv", parse_dates=["Timestamp"]) # Cargo el dataset en la variable data, que será un DataFrame de pandas.
+
+script_dir = os.path.dirname(__file__)
+csv_path = os.path.join(script_dir, '..', 'Data', 'reviews.csv')
+data = pd.read_csv(csv_path, parse_dates=["Timestamp"])
 data["Day"] = data["Timestamp"].dt.date              # Creo una nueva columna en el DataFrame que se llamará Day y que contendrá la fecha de la columna Timestamp
 day_average = data.groupby(["Day"])["Rating"].mean() # Agrupo los datos por la columna Day y realizo la media de los valores que hay en la columna Rating
 
