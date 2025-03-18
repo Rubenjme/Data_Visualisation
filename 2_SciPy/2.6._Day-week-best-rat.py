@@ -13,7 +13,7 @@ data['Daynumber'] = data['Timestamp'].dt.strftime('%w')
 weekday_average = data.groupby(['Weekday', 'Daynumber'])['Rating'].mean().reset_index()
 weekday_average = weekday_average.sort_values('Daynumber')
 
-
+# Código conseguido de: https://www.highcharts.com/docs/chart-and-series-types/spline-chart
 chart_def = """
 {
     chart: {
